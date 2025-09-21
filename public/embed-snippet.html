@@ -1,0 +1,29 @@
+<!-- הדביקו כ-HTML Embed באתר הלקוח (Wix וכו') -->
+<div id="mini-fastbots-root"></div>
+<script>
+  (function(){
+    var TENANT_ID = "PUT-TENANT-ID";
+    var BOT_ID = "PUT-BOT-ID";
+    var BRAND = "YC BOTS";
+    var BRAND_URL = "https://ycbots.com";
+    var ORIGIN = window.MFB_ORIGIN || (location.origin.includes('localhost') ? 'http://localhost:3000' : location.origin);
+    var u = new URL(ORIGIN + '/widget');
+    u.searchParams.set('tenant', TENANT_ID);
+    u.searchParams.set('bot', BOT_ID);
+    u.searchParams.set('rtl', '1');        // יישור RTL
+    u.searchParams.set('badge', '1');      // הצגת "נבנה על ידי"
+    u.searchParams.set('brand', BRAND);    // כותרת ברנד
+    u.searchParams.set('brandUrl', BRAND_URL);
+
+    var ifr = document.createElement('iframe');
+    ifr.src = u.toString();
+    ifr.loading = 'eager';
+    ifr.style = "position:fixed; z-index:2147483647; bottom:20px; right:20px; width:380px; height:560px; border:0; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.18);";
+    document.getElementById('mini-fastbots-root').appendChild(ifr);
+
+    // זיהוי משתמש אופציונלי
+    window.mfbIdentify = function(payload){
+      ifr.contentWindow.postMessage({ type:'identify', payload: payload || {} }, ORIGIN);
+    };
+  })();
+</script>
